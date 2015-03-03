@@ -1,6 +1,6 @@
 module particulate.particle;
 
-struct Particle(T) if (isNumeric!T) {
-    T x, y, size;
+struct Particle {
+    int x, y, size;
     float r, g, b; // Intensity of colors in [0, 1]
 }
