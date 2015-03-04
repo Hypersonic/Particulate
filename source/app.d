@@ -4,7 +4,7 @@ import particulate.particle;
 
 void main()
 {
-    auto func = function(float t, ulong n) {
+    auto func = delegate(float t, ulong n) {
         return Particle(cast(int) (t * n));
     };
     auto sys = ParticleSystem(0, func);

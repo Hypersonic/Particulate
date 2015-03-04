@@ -10,9 +10,9 @@ struct ParticleSystem {
     /* A function that given a t and which particle this is
      * This function may be called in any order, don't rely on state
      */
-    private immutable Particle function(float t, ulong n) part_func;
+    private immutable Particle delegate(float t, ulong n) part_func;
 
-    this(float t, Particle function(float, ulong) part_func) {
+    this(float t, Particle delegate(float, ulong) part_func) {
         this.t = t;
         this.part_func = part_func;
         Particle[] _parts;
