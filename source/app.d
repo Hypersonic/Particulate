@@ -1,10 +1,14 @@
 import std.stdio;
 import particulate.system;
+import particulate.particle;
 
 void main()
 {
-    auto sys = ParticleSystem(10);
-    foreach (part; sys) {
+    auto func = function(float t, ulong n) {
+        return Particle(cast(int) (t * n));
+    };
+    auto sys = ParticleSystem(0, func);
+    foreach (part; sys.at(10)) {
         part.x += 1;
         writeln(part);
     }
