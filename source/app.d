@@ -1,6 +1,11 @@
 import std.stdio;
+import particulate.system;
 
 void main()
 {
-	writeln("Edit source/app.d to start your project.");
+    auto sys = ParticleSystem(10);
+    foreach (part; sys) {
+        part.x += 1;
+        writeln(part);
+    }
 }
