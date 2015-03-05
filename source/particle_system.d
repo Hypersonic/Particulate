@@ -6,20 +6,20 @@ import particulate.particle;
 
 struct ParticleSystem {
     private immutable float t;
-    private immutable Particle[] particles;
+    private immutable Particle!int[] particles;
     /* A function that given a t and which particle this is
      * This function may be called in any order, don't rely on state
      */
-    private immutable Particle delegate(float t, ulong n) part_func;
+    private immutable Particle!int delegate(float t, ulong n) part_func;
 
-    this(float t, Particle delegate(float, ulong) part_func) {
+    this(float t, Particle!int delegate(float, ulong) part_func) {
         this.t = t;
         this.part_func = part_func;
-        Particle[] _parts;
+        Particle!int[] _parts;
         foreach (n; 0 .. 10) {
             _parts ~= part_func(t, n);
         }
-        particles = cast(immutable Particle[]) _parts;
+        particles = cast(immutable Particle!int[]) _parts;
     }
 
     ParticleSystem at(float t) {
@@ -27,7 +27,7 @@ struct ParticleSystem {
     }
 
     // Allow foreach over a system
-    int opApply(int delegate(Particle) dg) {
+    int opApply(int delegate(Particle!int) dg) {
         auto result = 0;
         foreach (particle; particles) {
             result = dg(particle);
