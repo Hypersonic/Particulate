@@ -3,6 +3,7 @@
 	"description": "A minimal D application.",
 	"copyright": "Copyright © 2015, josh",
 	"authors": ["josh"],
-	"dependencies": {
-	}
+    "dependencies": {
+        "gfm:sdl2": "~>2.0.13"
+    }
 }
