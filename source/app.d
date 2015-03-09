@@ -24,7 +24,7 @@ void main()
                 (100 * (t/100.0).cos).to!int,
                 10, 1, .5, 1);
     };
-    auto sys = ParticleSystem(0, func);
+    auto sys = ParticleSystem(0, 100, func);
 
     bool running = true;
     int t = 0;
