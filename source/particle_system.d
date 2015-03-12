@@ -12,13 +12,13 @@ struct ParticleSystem {
      */
     private immutable Particle!(int[2]) delegate(float t, ulong n) part_func;
 
-    this(float t, ulong n, Particle!(int[2]) delegate(float, ulong) part_func) {
+    @safe this(float t, ulong n, Particle!(int[2]) delegate(float, ulong) part_func) {
         this.t = t;
         this.n_parts = n;
         this.part_func = part_func;
     }
 
-    ParticleSystem at(float t) {
+    @safe ParticleSystem at(float t) {
         return ParticleSystem(t, n_parts, part_func);
     }
 
