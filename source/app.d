@@ -19,9 +19,9 @@ void main()
     auto renderer = new SDL2Renderer(window);
 
     auto func = delegate(float t, ulong n) {
-        return Particle!int(
-                (100 * (t/100.0).sin + n * 100).to!int,
-                (100 * (t/100.0).cos).to!int,
+        return Particle!(int[2])(
+                [(100 * (t/100.0).sin + n * 100).to!int,
+                (100 * (t/100.0).cos).to!int],
                 10, 1, .5, 1);
     };
     auto sys = ParticleSystem(0, 100, func);
@@ -37,7 +37,7 @@ void main()
                     (part.r * 255).to!int,
                     (part.g * 255).to!int,
                     (part.b * 255).to!int);
-            renderer.fillRect(part.x + width/2, part.y + height / 2, part.size, part.size);
+            renderer.fillRect(part.pos[0] + width/2, part.pos[1] + height / 2, part.size.to!int, part.size.to!int);
         }
 
 
