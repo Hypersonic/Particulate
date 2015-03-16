@@ -26,12 +26,21 @@ void main()
     };
     auto sys = ParticleSystem(0, 100, func);
 
+    struct Guy {
+        int x;
+        int y;
+    }
+
+    Guy guy = Guy(width/2, height/2);
+
     bool running = true;
     int t = 0;
     while (running) {
         sdl2.processEvents();
         t++;
 
+        renderer.setColor(255, 255, 255);
+        renderer.fillRect(guy.x, guy.y, 10, 20);
         foreach (part; sys.at(t)) {
             renderer.setColor(
                     (part.r * 255).to!int,
