@@ -30,12 +30,12 @@ void main()
 
     auto func = delegate(float t, ulong n) {
         import std.random;
-        auto yoffset = (n * abs(1 / (guy.vy+1)) * uniform(1.0,t%4+2)).to!int;
-        auto xoffset = (n * uniform(-1.0,1.0) - (guy.vx*5)).to!int;
+        auto yoffset = n * abs(1 / (guy.vy+1)) * uniform(1.0,t%4+2);
+        auto xoffset = n * uniform(-1.0,1.0) * yoffset / 200 - (guy.vx*5);
         return Particle!(int[2])(
-                [guy.x + xoffset,
-                guy.y + yoffset],
-                1, 1, uniform(0.0, 1.0), 0);
+                [guy.x + xoffset.to!int,
+                guy.y + yoffset.to!int],
+                (n+1).log.to!int, 1, uniform(0.0, 1.0), 0);
     };
     auto sys = ParticleSystem(0, 100, func);
 
