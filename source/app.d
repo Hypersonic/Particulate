@@ -1,6 +1,7 @@
 import std.stdio;
 import std.conv;
 import std.math;
+import std.algorithm;
 
 import particulate.system;
 import particulate.particle;
@@ -18,26 +19,35 @@ void main()
             SDL_WINDOW_SHOWN);
     auto renderer = new SDL2Renderer(window);
 
-    auto func = delegate(float t, ulong n) {
-        return Particle!(int[2])(
-                [(100 * (t/100.0).sin + n * 100).to!int,
-                (100 * (t/100.0).cos).to!int],
-                10, 1, .5, 1);
-    };
-    auto sys = ParticleSystem(0, 100, func);
-
     struct Guy {
         int x;
         int y;
+        float vx = 0;
+        float vy = 0;
     }
 
     Guy guy = Guy(width/2, height/2);
+
+    auto func = delegate(float t, ulong n) {
+        import std.random;
+        return Particle!(int[2])(
+                [(guy.x + n * uniform(-1.0,1.0)).to!int,
+                (guy.y + n * abs(1 / (guy.vy+1)) * uniform(1.0,t%4+2)).to!int],
+                1, 1, uniform(0.0, 1.0), 0);
+    };
+    auto sys = ParticleSystem(0, 100, func);
 
     bool running = true;
     int t = 0;
     while (running) {
         sdl2.processEvents();
         t++;
+
+        guy.x += guy.vx;
+        guy.y += guy.vy;
+
+        guy.vx *= .6;
+        guy.vy *= .6;
 
         renderer.setColor(255, 255, 255);
         renderer.fillRect(guy.x, guy.y, 10, 20);
@@ -46,7 +56,7 @@ void main()
                     (part.r * 255).to!int,
                     (part.g * 255).to!int,
                     (part.b * 255).to!int);
-            renderer.fillRect(part.pos[0] + width/2, part.pos[1] + height / 2, part.size.to!int, part.size.to!int);
+            renderer.fillRect(part.pos[0], part.pos[1], part.size.to!int, part.size.to!int);
         }
 
 
@@ -55,6 +65,18 @@ void main()
         renderer.clear();
 
         // Exit on escape
+        if (sdl2.keyboard().isPressed(SDLK_w)) {
+            guy.vy -= 1;
+        }
+        if (sdl2.keyboard().isPressed(SDLK_s)) {
+            guy.vy += 1;
+        }
+        if (sdl2.keyboard().isPressed(SDLK_a)) {
+            guy.vx -= 1;
+        }
+        if (sdl2.keyboard().isPressed(SDLK_d)) {
+            guy.vx += 1;
+        }
         if (sdl2.keyboard().isPressed(SDLK_ESCAPE)) {
             running = false;
         }
