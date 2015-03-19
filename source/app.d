@@ -37,10 +37,27 @@ void main()
     walls ~= Wall(100, 100, 20, 400);
     walls ~= Wall(100, 500, 200, 20);
 
+    bool isIntersecting(int p1x, int p1y, int p2x, int p2y, int p3x, int p3y, int p4x, int p4y) {
+        bool CCW(int p1x, int p1y, int p2x, int p2y, int p3x, int p3y) {
+                return (p3y - p1y) * (p2x - p1x) > (p2y - p1y) * (p3x - p1x);
+            }
+        return (CCW(p1x, p1y, p3x, p3y, p4x, p4y) != CCW(p2x, p2y, p3x, p3y, p4x, p4y)) && (CCW(p1x, p1y, p2x, p2y, p3x, p3y) != CCW(p1x, p1y, p2x, p2y, p4x, p4y));
+    }
+
     auto func = delegate(float t, ulong n) {
         import std.random;
         auto yoffset = n * abs(1 / (guy.vy+1)) * uniform(1.0,t%4+2);
         auto xoffset = n * uniform(-1.0,1.0) * yoffset / 200 - (guy.vx*5);
+        foreach (wall; walls) {
+            if (
+                isIntersecting(wall.x, wall.y, wall.x + wall.width, wall.y, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || 
+                isIntersecting(wall.x, wall.y, wall.x, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || 
+                isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) ||
+                isIntersecting(wall.x + wall.width, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int)
+                ) {
+                return Particle!(int[2])([0,0], 0, 0, 0, 0);
+            }
+        }
         return Particle!(int[2])(
                 [guy.x + xoffset.to!int,
                 guy.y + yoffset.to!int],
