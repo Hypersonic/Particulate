@@ -49,13 +49,14 @@ void main()
         auto yoffset = n * abs(1 / (guy.vy+1)) * uniform(1.0,t%4+2);
         auto xoffset = n * uniform(-1.0,1.0) * yoffset / 200 - (guy.vx*5);
         foreach (wall; walls) {
+            // Test for intersection between the edges of the wall and the line from the guy to the particle we're trying to create
             if (
                 isIntersecting(wall.x, wall.y, wall.x + wall.width, wall.y, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || 
                 isIntersecting(wall.x, wall.y, wall.x, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || 
                 isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) ||
                 isIntersecting(wall.x + wall.width, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int)
                 ) {
-                return Particle!(int[2])([0,0], 0, 0, 0, 0);
+                return Particle!(int[2])([0,0], 0, 0, 0, 0); // return a dummy particle with size of 0 at 0,0, which is basically an imaginary particle
             }
         }
         return Particle!(int[2])(
