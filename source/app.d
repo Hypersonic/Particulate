@@ -25,8 +25,17 @@ void main()
         float vx = 0;
         float vy = 0;
     }
+    struct Wall {
+        int x;
+        int y;
+        int width;
+        int height;
+    }
 
     Guy guy = Guy(width/2, height/2);
+    Wall[] walls;
+    walls ~= Wall(100, 100, 20, 400);
+    walls ~= Wall(100, 500, 200, 20);
 
     auto func = delegate(float t, ulong n) {
         import std.random;
@@ -53,6 +62,9 @@ void main()
 
         renderer.setColor(255, 255, 255);
         renderer.fillRect(guy.x, guy.y, 10, 20);
+        foreach (wall; walls) {
+            renderer.fillRect(wall.x, wall.y, wall.width, wall.height);
+        }
         foreach (part; sys.at(t)) {
             renderer.setColor(
                     (part.r * 255).to!int,
