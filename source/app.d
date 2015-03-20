@@ -51,10 +51,10 @@ void main()
         foreach (wall; walls) {
             // Test for intersection between the edges of the wall and the line from the guy to the particle we're trying to create
             if (
-                isIntersecting(wall.x, wall.y, wall.x + wall.width, wall.y, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || 
-                isIntersecting(wall.x, wall.y, wall.x, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || 
-                isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) ||
-                isIntersecting(wall.x + wall.width, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int)
+                isIntersecting(wall.x, wall.y, wall.x + wall.width, wall.y, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || // Top
+                isIntersecting(wall.x, wall.y, wall.x, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || // Left
+                isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) || // Right
+                isIntersecting(wall.x + wall.width, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int) //Bottom
                 ) {
                 return Particle!(int[2])([0,0], 0, 0, 0, 0); // return a dummy particle with size of 0 at 0,0, which is basically an imaginary particle
             }
