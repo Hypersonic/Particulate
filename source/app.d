@@ -35,7 +35,9 @@ void main()
     Guy guy = Guy(width/2, height/2);
     Wall[] walls;
     walls ~= Wall(100, 100, 20, 400);
+    walls ~= Wall(100, 100, 200, 20);
     walls ~= Wall(100, 500, 200, 20);
+    walls ~= Wall(200, 100, 20, 400);
 
     bool isIntersecting(int p1x, int p1y, int p2x, int p2y, int p3x, int p3y, int p4x, int p4y) {
         bool CCW(int p1x, int p1y, int p2x, int p2y, int p3x, int p3y) {
@@ -48,20 +50,34 @@ void main()
         import std.random;
         auto yoffset = n * abs(1 / (guy.vy+1)) * uniform(1.0,t%4+2);
         auto xoffset = n * uniform(-1.0,1.0) * yoffset / 200 - (guy.vx*5);
-        foreach (wall; walls) {
-            // Test for intersection between the edges of the wall and the line from the guy to the particle we're trying to create
-            bool top = isIntersecting(wall.x, wall.y, wall.x + wall.width, wall.y, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int); 
-            bool left = isIntersecting(wall.x, wall.y, wall.x, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
-            bool right = isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
-            bool bottom = isIntersecting(wall.x + wall.width, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
-            if (left || right) {
-                auto side = left ? wall.x : wall.x + wall.width;
-                xoffset = (side - guy.x) - xoffset - (guy.x - side);
+        bool isColliding = false;
+        uint iterations = 0;
+        uint maxIterations = 1000;
+        auto startx = guy.x;
+        auto starty = guy.y;
+        do {
+            foreach (wall; walls) {
+                // Test for intersection between the edges of the wall and the line from the guy to the particle we're trying to create
+                bool top = isIntersecting(wall.x, wall.y, wall.x + wall.width, wall.y, startx, starty, guy.x + xoffset.to!int, guy.y + yoffset.to!int); 
+                bool left = isIntersecting(wall.x, wall.y, wall.x, wall.y + wall.height, startx, starty, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
+                bool right = isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, startx, starty, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
+                bool bottom = isIntersecting(wall.x, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, startx, starty, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
+                if (left || right) {
+                    auto side = left ? wall.x : wall.x + wall.width;
+                    xoffset = (side - guy.x) - xoffset - (guy.x - side);
+                    startx = side;
+                }
+                if (top || bottom) {
+                    auto side = top ? wall.y : wall.y + wall.height;
+                    yoffset = (side - guy.y) - yoffset - (guy.y - side);
+                    starty = side;
+                }
+                isColliding = top || bottom || left || right;
+                iterations++;
             }
-            if (top || bottom) {
-                auto side = top ? wall.y : wall.y + wall.height;
-                yoffset = (side - guy.y) - yoffset - (guy.y - side);
-            }
+        } while (isColliding && iterations < maxIterations);
+        if (iterations >= maxIterations) {
+            writeln("exceeded iterations!");
         }
         return Particle!(int[2])(
                 [guy.x + xoffset.to!int,
