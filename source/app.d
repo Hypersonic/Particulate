@@ -55,10 +55,12 @@ void main()
             bool right = isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
             bool bottom = isIntersecting(wall.x + wall.width, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, guy.x, guy.y, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
             if (left || right) {
-                xoffset = (wall.x - guy.x) - xoffset - (guy.x - wall.x);
+                auto side = left ? wall.x : wall.x + wall.width;
+                xoffset = (side - guy.x) - xoffset - (guy.x - side);
             }
             if (top || bottom) {
-                yoffset = (wall.y - guy.y) - yoffset - (guy.y - wall.y);
+                auto side = top ? wall.y : wall.y + wall.height;
+                yoffset = (side - guy.y) - yoffset - (guy.y - side);
             }
         }
         return Particle!(int[2])(
