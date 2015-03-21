@@ -70,6 +70,7 @@ void main()
                 if (top || bottom) {
                     auto side = top ? wall.y : wall.y + wall.height;
                     yoffset = (side - guy.y) - yoffset - (guy.y - side);
+                    yoffset *= .5; // shrink because gravity
                     starty = side;
                 }
                 isColliding = top || bottom || left || right;
