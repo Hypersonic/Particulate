@@ -77,9 +77,6 @@ void main()
                 iterations++;
             }
         } while (isColliding && iterations < maxIterations);
-        if (iterations >= maxIterations) {
-            writeln("exceeded iterations!");
-        }
         return Particle!(int[2])(
                 [guy.x + xoffset.to!int,
                 guy.y + yoffset.to!int],
