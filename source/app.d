@@ -70,7 +70,7 @@ void main()
                 if (top || bottom) {
                     auto side = top ? wall.y : wall.y + wall.height;
                     yoffset = (side - guy.y) - yoffset - (guy.y - side);
-                    yoffset *= .5; // shrink because gravity
+                    yoffset *= .2; // shrink because gravity
                     starty = side;
                 }
                 isColliding = top || bottom || left || right;
@@ -78,8 +78,8 @@ void main()
             }
         } while (isColliding && iterations < maxIterations);
         return Particle!(int[2])(
-                [guy.x + xoffset.to!int,
-                guy.y + yoffset.to!int],
+                [startx + xoffset.to!int,
+                starty + yoffset.to!int],
                 (n+1).log.to!int, 1, uniform(0.0, 1.0), 0);
     };
     auto sys = ParticleSystem(0, 100, func);
