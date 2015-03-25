@@ -34,10 +34,10 @@ void main()
 
     Guy guy = Guy(width/2, height/2);
     Wall[] walls;
-    walls ~= Wall(100, 100, 20, 400);
-    walls ~= Wall(100, 100, 200, 20);
-    walls ~= Wall(100, 500, 200, 20);
-    walls ~= Wall(200, 100, 20, 400);
+    walls ~= Wall(400, 100, 20, 400);
+    walls ~= Wall(400, 100, 200, 20);
+    walls ~= Wall(400, 500, 200, 20);
+    walls ~= Wall(500, 100, 20, 400);
 
     bool isIntersecting(int p1x, int p1y, int p2x, int p2y, int p3x, int p3y, int p4x, int p4y) {
         bool CCW(int p1x, int p1y, int p2x, int p2y, int p3x, int p3y) {
