@@ -69,7 +69,7 @@ void main()
                 }
                 if ((top && wall.y > starty) || (bottom && wall.y < starty)) {
                     auto side = top ? wall.y : wall.y + wall.height;
-                    yoffset = (side - guy.y) - yoffset;
+                    yoffset = (side - starty) - yoffset;
                     yoffset *= .2; // shrink because gravity
                     starty = side;
                 }
