@@ -62,12 +62,12 @@ void main()
                 bool left = isIntersecting(wall.x, wall.y, wall.x, wall.y + wall.height, startx, starty, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
                 bool right = isIntersecting(wall.x + wall.width, wall.y, wall.x + wall.width, wall.y + wall.height, startx, starty, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
                 bool bottom = isIntersecting(wall.x, wall.y + wall.height, wall.x + wall.width, wall.y + wall.height, startx, starty, guy.x + xoffset.to!int, guy.y + yoffset.to!int);
-                if (left || right) {
+                if ((left && wall.x > startx) || (right && wall.x < startx)) {
                     auto side = left ? wall.x : wall.x + wall.width;
-                    xoffset = (side - guy.x) - xoffset;
                     startx = side;
+                    xoffset = -xoffset;
                 }
-                if (top || bottom) {
+                if ((top && wall.y > starty) || (bottom && wall.y < starty)) {
                     auto side = top ? wall.y : wall.y + wall.height;
                     yoffset = (side - guy.y) - yoffset;
                     yoffset *= .2; // shrink because gravity
