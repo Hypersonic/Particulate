@@ -82,7 +82,7 @@ void main()
                 starty + yoffset.to!int],
                 (n+1).log.to!int, 1, uniform(0.0, 1.0), 0);
     };
-    auto sys = ParticleSystem(0, 100, func);
+    auto sys = ParticleSystem!()(0, 100, func);
 
     bool running = true;
     int t = 0;
