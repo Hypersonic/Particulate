@@ -1,7 +1,5 @@
 module particulate.system;
 
-import std.range;
-
 import particulate.particle;
 
 struct ParticleSystem(ParticleType = Particle!(int[2])) {
