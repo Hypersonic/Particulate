@@ -127,7 +127,7 @@ void main()
         if (sdl2.keyboard().isPressed(SDLK_d)) {
             guy.vx += 1;
         }
-        if (sdl2.keyboard().isPressed(SDLK_ESCAPE)) {
+        if (sdl2.keyboard().isPressed(SDLK_ESCAPE) || sdl2.keyboard().isPressed(SDLK_q)) {
             running = false;
         }
     }
